@@ -50,7 +50,23 @@ function doHealthchecksIOPing
 function doRemoteNotifications($message)
 {
     log "=== doRemoteNotifications"
-    doTelegramNotification $message
+    # doTelegramNotification $message
+    doTelegramNotificationWithTnotify $message
+}
+
+function doTelegramNotificationWithTnotify($message)
+{
+    if ($telegramToken -And $telegramBotKey)
+    {
+        log "=== doTelegramNotificationWithTnotify"
+		$content = ($message).ToString()
+		$title = "[wserv1] duplicacy - Backup eseguito"
+		$icon = "1F4E5"
+		
+		$all_args = @("-user", $telegramToken, "-key", $telegramBotKey, "-text", $content, "-title", $title, "-icon", $icon, "-html")
+		
+		& $tnotifyExePath $all_args
+    }
 }
 
 # Telegram notifications use the bot
