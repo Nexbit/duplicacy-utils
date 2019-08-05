@@ -59,13 +59,21 @@ function doTelegramNotificationWithTnotify($message)
     if ($telegramToken -And $telegramBotKey)
     {
         log "=== doTelegramNotificationWithTnotify"
-		$content = ($message).ToString()
-		$title = "[wserv1] duplicacy - Backup eseguito"
-		$icon = "1F4E5"
-		
-		$all_args = @("-user", $telegramToken, "-key", $telegramBotKey, "-text", $content, "-title", $title, "-icon", $icon, "-html")
-		
-		& $tnotifyExePath $all_args
+        $content = ($message).ToString()
+        if ($globalSuccessStatus)
+        {
+            $title = "[wserv1] duplicacy - Backup eseguito"
+            $icon = "1F4E5"
+        }
+        else
+        {
+            $title = "[wserv1] duplicacy - Backup CON ERRORI!"
+            $icon = "1F6A8"
+        }
+        
+        $all_args = @("-user", $telegramToken, "-key", $telegramBotKey, "-text", $content, "-title", $title, "-icon", $icon, "-html")
+        
+        & $tnotifyExePath $all_args
     }
 }
 
